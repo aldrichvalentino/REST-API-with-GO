@@ -1,0 +1,30 @@
+version: '2.0'
+
+services:
+  db:
+    image: mysql:5.6
+    ports:
+      - 3306:3306
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin
+    volumes:
+      - db:/var/lib/mysql
+
+  web:
+    build: .
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/go/src/app
+      - /go/src/app/vendor
+    depends_on:
+      - db
+    links:
+      - db
+
+volumes:
+  db:
+    driver: local
