@@ -44,8 +44,13 @@ func main() {
 	Router := mux.NewRouter()
 	Router.HandleFunc("/", handleGet).Methods("GET")
 	Router.HandleFunc("/", handlePost).Methods("POST")
+
+	// CRUD user routes
 	Router.HandleFunc("/user/", routes.HandleGetAllUser).Methods("GET")
 	Router.HandleFunc("/user/{id:[0-9]+}", routes.HandleGetUserById).Methods("GET")
+	Router.HandleFunc("/user/", routes.HandleCreateUser).Methods("POST")
+	Router.HandleFunc("/user/{id:[0-9]+}", routes.HandleEditUser).Methods("PATCH")
+	Router.HandleFunc("/user/{id:[0-9]+}", routes.HandleDeleteUser).Methods("DELETE")
 
 	log.Fatal(http.ListenAndServe(":8080", Router))
 }
