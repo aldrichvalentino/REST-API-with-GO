@@ -7,7 +7,7 @@ Use Docker and docker-compose
   docker-compose build
   docker-compose up
 ```
-TODO: you will need to create a database, migration files are not yet implemented
+You may have to do a `docker-compose down` first after building and running the app for the first time. Then, execute `docker-compose up` again.
 
 # Other build methods
 Use Go in your machine (_I haven't test this!_)
@@ -26,10 +26,23 @@ Install dependencies
 ```
 Then run fresh for monitoring changes
 ```
-  fresh
+  fresh -c runner.conf
+```
+# API Reference
+App will be running on `PORT=8080`. The app currently has 1 resource.
+```
+  GET     /user/
+  POST    /user/
+  GET     /user/{id:[0-9]+}
+  PATCH   /user/{id:[0-9]+}
+  DELETE  /user/{id:[0-9]+}
 ```
 
 # Known issues
 If you encountered an error while executing `dep ensure`, then you probably clone the repo in the wrong place.
 
 Solution: make sure you clone the repo under your `$GOPATH/src`. See [dep new project](https://github.com/golang/dep/blob/master/docs/new-project.md) for more information.
+
+# TODO
+- create authentication with JWT and sessions
+- refactor handlers and the database connection
