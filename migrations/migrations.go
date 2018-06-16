@@ -2,27 +2,26 @@ package migrations
 
 import (
 	"fmt"
-	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"app/model"
 )
 
 func Migrate() {
-	db, err := sql.Open("mysql", "root:admin@tcp(db)/") // no address means default localhost
+	db, err := gorm.Open("mysql", "root:admin@tcp(db)/") 
 	if err != nil {
-		panic(err.Error())
+		panic(err)
 	}
 	defer db.Close()
 
-	// Open doesn't open a connection. Validate DSN data
-	err = db.Ping()
-	if err != nil {
-    panic(err.Error()) 
-	}
+	// create database first
+	db.Exec("CREATE DATABASE mydb")
 
-	// migration
-	db.Query("CREATE DATABASE mydb")
-	db.Query("CREATE TABLE mydb.user(id int auto_increment, name varchar(255), age int, PRIMARY KEY(id))")
-	// TODO: create seperate functions for creating db and tables
+	// use database
+	db.Exec("USE mydb")
+
+	// migrate
+	db.AutoMigrate(&model.User{})
 
 	fmt.Println("Database migraion success")
 }

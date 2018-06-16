@@ -18,6 +18,6 @@ RUN dep ensure
 RUN go get -u github.com/pilu/fresh
 
 # execute a watcher
-CMD ["fresh"]
+CMD ["fresh", "-c", "runner.conf"]
 
 EXPOSE 8080
